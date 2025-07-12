@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}Django Delights -- Login{% endblock %}
+
+{% block content %}
+  <style>
+    body {
+      background: #fff7f0; /* light orange */
+      color: #000; /* black */
+      font-family: Arial, sans-serif;
+    }
+    .login-form {
+      background: #fff; /* white */
+      border: 2px solid #ffb997; /* light orange border */
+      border-radius: 10px;
+      max-width: 350px;
+      margin: 60px auto;
+      padding: 32px 28px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+    }
+    .login-form h2 {
+      color: #ff6f61; /* light red */
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .login-form label {
+      color: #000;
+      font-weight: bold;
+    }
+    .login-form input[type="text"],
+    .login-form input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0 16px 0;
+      border: 1px solid #ffb997; /* light orange */
+      border-radius: 5px;
+      background: #fff7f0; /* light orange */
+      color: #000;
+    }
+    .submit-button {
+      width: 100%;
+      background: #ff6f61; /* light red */
+      color: #fff; /* white */
+      border: none;
+      padding: 12px;
+      border-radius: 5px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .submit-button:hover {
+      background: #ffb997; /* lighter orange on hover */
+      color: #000;
+    }
+  </style>
+  <div class="login-form">
+    <h2>Login</h2>
+    <form method="post">
+      {% csrf_token %}
+      {{ form }}
+      <button class="submit-button" type="submit">Login</button>
+    </form>
+  </div>
+{% endblock %}

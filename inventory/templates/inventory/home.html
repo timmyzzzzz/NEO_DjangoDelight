@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% load static %} 
+{% block title %}Django Delights{% endblock %}
+{% block content %}
+<style>
+    body {
+        background: linear-gradient(135deg, #fff6e5 0%, #ffe5e5 100%);
+        font-family: 'Segoe UI', sans-serif;
+        color: #111;
+    }
+    .home {
+        background: #fff;
+        border-radius: 16px;
+        padding: 32px;
+        margin: 32px auto;
+        max-width: 900px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+    }
+    h2 {
+        color: #ff7043;
+        margin-top: 24px;
+        margin-bottom: 16px;
+        letter-spacing: 1px;
+    }
+    .inventory-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 24px;
+        background: #fff6e5;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .inventory-table th {
+        background: #ffb347;
+        color: #111;
+        padding: 12px;
+        font-weight: 600;
+    }
+    .inventory-table td {
+        padding: 10px;
+        border-bottom: 1px solid #ffe5e5;
+        color: #111;
+    }
+    .inventory-table tr:nth-child(even) {
+        background: #ffe5e5;
+    }
+    .price {
+        color: #ff7043;
+        font-weight: bold;
+    }
+    hr {
+        border: none;
+        border-top: 2px solid #ffb347;
+        margin: 32px 0;
+    }
+    .menu-items {
+        list-style: none;
+        padding: 0;
+    }
+    .menu-item-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #ff7043;
+        color: #fff;
+        padding: 10px 16px;
+        border-radius: 6px;
+        margin-bottom: 6px;
+        font-size: 1.1em;
+    }
+    .menu-item-title {
+        color: #fff;
+    }
+    .menu-item-price {
+        color: #fff;
+    }
+    .menu-item-ingredients {
+        margin: 0 0 16px 24px;
+        color: #111;
+    }
+</style>
+    <div class="home">
+        <div>
+            <h2>Ingredients</h2>
+            <table class="inventory-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Quantity</th>
+                        <th>Unit</th>
+                        <th>Unit Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for ingredient in ingredients %}
+                    <tr>
+                        <td>{{ ingredient.name }}</td>
+                        <td>{{ ingredient.quantity }}</td>
+                        <td>{{ ingredient.unit }}</td>
+                        <td class="price">${{ ingredient.price_per_unit|stringformat:".2f" }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <hr/>
+
+        <div>
+            <h2>Purchases</h2>
+            <table class="inventory-table">
+                <thead>
+                    <tr>
+                        <th>Menu Item</th>
+                        <th>Price</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for purchase in purchases %}
+                    <tr>
+                        <td>{{ purchase.menu_item.title }}</td>
+                        <td class="price">${{ purchase.menu_item.price|stringformat:".2f" }}</td>
+                        <td>{{ purchase.timestamp }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <hr/>
+
+        <div>
+            <h2>Menu</h2>
+            <ul class="menu-items">
+            {% for menu_item in menu_items %}
+                <li>
+                    <div class="menu-item-header">
+                        <div class="menu-item-title">{{ menu_item.title }}</div>
+                        <div class="menu-item-price">${{ menu_item.price|stringformat:".2f" }}</div>
+                    </div>
+                    <ul class="menu-item-ingredients">
+                        {% for recipe_requirement in menu_item.reciperequirement_set.all %}
+                        <li>{{ recipe_requirement.quantity }} {{recipe_requirement.ingredient.unit }} {{ recipe_requirement.ingredient.name }}</li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}
